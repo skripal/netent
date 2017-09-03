@@ -18,51 +18,79 @@ button.on('pointerdown', onClickMe);
 app.stage.addChild(button);
 
 
+var firstStripe = new PIXI.Container();
+var secondStripe = new PIXI.Container();
+var thirdStripe = new PIXI.Container();
+app.stage.addChild(firstStripe);
+app.stage.addChild(secondStripe);
+app.stage.addChild(thirdStripe);
 
-
-var container = new PIXI.Container();
-app.stage.addChild(container);
-
-var symbols = ['img/SYM5.png', 'img/SYM6.png','img/SYM7.png','img/SYM1.png','img/SYM3.png','img/SYM4.png','img/SYM5.png','img/SYM6.png','img/SYM7.png'];
+var symbols = ['img/SYM5.png', 'img/SYM6.png', 'img/SYM7.png', 'img/SYM1.png', 'img/SYM3.png', 'img/SYM4.png', 'img/SYM5.png', 'img/SYM6.png', 'img/SYM7.png'];
 for (var i = 0; i < symbols.length; i++) {
     var item = PIXI.Sprite.fromImage(symbols[i]);
     item.x = 150;
-    item.y =  -450 + (i*250);
-    container.addChild(item);
+    item.y = -450 + (i * 250);
+    firstStripe.addChild(item);
+}
+
+for (i = 0; i < symbols.length; i++) {
+    item = PIXI.Sprite.fromImage(symbols[i]);
+    item.x = 500;
+    item.y = -450 + (i * 250);
+    secondStripe.addChild(item);
+}
+
+for (i = 0; i < symbols.length; i++) {
+    item = PIXI.Sprite.fromImage(symbols[i]);
+    item.x = 850;
+    item.y = -450 + (i * 250);
+    thirdStripe.addChild(item);
 }
 
 function onClickMe() {
-    container.y = parseInt(Math.random()*125) * 10 - 750;
-    console.log("random: ", container.y);
-    var rotator = setInterval(rotation, 10);
-    var c = 5;
-    var step = parseInt(Math.exp(c));
 
-    function rotation() {
-        container.y += step;
-        c = c - 0.05;
-        step = parseInt(Math.exp(c));
-        console.log("step: ", step);
-        if (container.y > 500) {
-            container.y = -900;
-        }
+    var combination = [];
+    firstStripe.y = parseInt(Math.random() * 125) * 10 - 750;
+    secondStripe.y = parseInt(Math.random() * 125) * 10 - 750;
+    thirdStripe.y = parseInt(Math.random() * 125) * 10 - 750;
 
-        if (step <= 10) {
-            clearInterval(rotator);
-            finishRotation();
+    var rotator1 = setInterval(rotation, 100, firstStripe);
+    var rotator2 = setInterval(rotation, 100, secondStripe);
+    var rotator3 = setInterval(rotation, 100, thirdStripe);
+    var rotationSpeed = 150;
+
+    function rotation(stripe) {
+        stripe.y += rotationSpeed;
+        if (stripe.y > 500) {
+            stripe.y = -900;
         }
     }
-        function finishRotation() {
-            setInterval(stopR, 100);
-            function stopR () {
-                if (container.y % 250 != 0) {
-                    if (container.y%10 != 0) {
-                        container.y = container.y - container.y%10;
-                    }
-                    container.y += 10;
-                } else {
-                    clearInterval(stopR);
-                }
+
+    function finishRotation(stripe, rotator) {
+
+        if (stripe.y % 250 != 0) {
+            if (stripe.y < 0) {
+                stripe.y -= stripe.y % 250;
+            } else {
+                stripe.y += 250 - stripe.y % 250;
             }
         }
+        combination.push(stripe.y);
+        clearInterval(rotator);
+
+        if (rotator === rotator3) {
+            checkWinning(combination);
+        }
+    }
+
+    setTimeout(finishRotation, 1000, firstStripe, rotator1);
+    setTimeout(finishRotation, 1500, secondStripe, rotator2);
+    setTimeout(finishRotation, 2000, thirdStripe, rotator3);
+
 }
+
+
+var line = new PIXI.Sprite.fromImage('img/Bet_Line.png');
+line.y = 380;
+line.x = 225;
+app.stage.addChild(line);
