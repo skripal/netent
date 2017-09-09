@@ -1,0 +1,34 @@
+{
+  "symbols": [
+    {
+      "path": "img/SYM1.png",
+      "name": "wild"
+    },
+    {
+      "path": "img/SYM3.png",
+      "name": "strawberry"
+    },
+    {
+      "path": "img/SYM4.png",
+      "name": "ananas"
+    },
+    {
+      "path": "img/SYM5.png",
+      "name": "lemon"
+    },
+    {
+      "path": "img/SYM6.png",
+      "name": "greenberry"
+    },
+    {
+      "path": "img/SYM7.png",
+      "name": "blackberry"
+    }
+  ],
+  "elements": {
+    "line": "img/Bet_Line.png",
+    "background": "img/BG.png",
+    "button": "img/BTN_Spin.png",
+    "buttonDisabled": "img/BTN_Spin_d.png"
+  }
+}
